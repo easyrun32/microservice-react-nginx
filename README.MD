@@ -1,1 +1,6 @@
-A microservice template
+A microservice template!
+Technologies:
+React
+Node
+Nginx
+Docker

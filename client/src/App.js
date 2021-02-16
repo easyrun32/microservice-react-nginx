@@ -1,6 +1,6 @@
 import axios from "axios";
 const App = () => {
-  return <div>Hello worldsssasdasdasd!</div>;
+  return <div>DOPE</div>;
 };
 
 export default App;
