@@ -1,0 +1,52 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./services/nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - client
+      - users
+      - task
+  client:
+    stdin_open: true
+    container_name: client
+    build:
+      context: "./client"
+      dockerfile: Dockerfile
+    links:
+      - users
+      - task
+    depends_on:
+      - users
+      - task
+    volumes:
+      - "./client:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_SERVICE_URL=${REACT_APP_API_SERVICE_URL}
+    ports:
+      - "3000:80"
+  task:
+    container_name: task
+    build:
+      context: "./services/node-server-task"
+      dockerfile: Dockerfile
+    volumes:
+      - "./services/node-server-task:/app"
+    ports:
+      - "7001:5000"
+  users:
+    container_name: users
+    build:
+      context: "./services/node-server-users"
+      dockerfile: Dockerfile
+    volumes:
+      - "./services/node-server-users:/app"
+    ports:
+      - "7002:5000"
