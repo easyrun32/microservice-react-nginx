@@ -19,6 +19,5 @@ COPY package-lock.json .
 RUN npm ci
 RUN npm install react-scripts@4.0.2 prettier@2.1.1 eslint@7.13.0 -g --silent
 
-
 # Pretty self explanatory XD 
 CMD ["npm", "start"]
