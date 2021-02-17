@@ -4,7 +4,7 @@ services:
     container_name: nginx
     build:
       context: ./services/nginx
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     restart: always
     ports:
       - "80:80"
@@ -17,7 +17,7 @@ services:
     container_name: client
     build:
       context: "./client"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     links:
       - users
       - task
@@ -28,15 +28,14 @@ services:
       - "./client:/usr/src/app"
       - "/usr/src/app/node_modules"
     environment:
-      - NODE_ENV=development
-
+      - NODE_ENV=production
     ports:
       - "3000:80"
   task:
     container_name: task
     build:
       context: "./services/node-server-task"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     volumes:
       - "./services/node-server-task:/app"
     ports:
@@ -45,7 +44,7 @@ services:
     container_name: users
     build:
       context: "./services/node-server-users"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     volumes:
       - "./services/node-server-users:/app"
     ports:
