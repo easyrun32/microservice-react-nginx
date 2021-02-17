@@ -64,37 +64,37 @@ resource "aws_lb_listener_rule" "static" {
 
 
 //HTTPS TO CLIENT 
-resource "aws_lb_listener" "listener_https" {
-  load_balancer_arn = aws_lb.alb.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:us-east-1:642815940637:certificate/406807ba-efb4-41c0-98c5-b0794a9b04e4"
-  // GO TO CLIENT
-  default_action {
-    type = "forward"
+# resource "aws_lb_listener" "listener_https" {
+#   load_balancer_arn = aws_lb.alb.arn
+#   port              = "443"
+#   protocol          = "HTTPS"
+#   ssl_policy        = "ELBSecurityPolicy-2016-08"
+#   certificate_arn   = "arn:aws:acm:us-east-1:642815940637:certificate/406807ba-efb4-41c0-98c5-b0794a9b04e4"
+#   // GO TO CLIENT
+#   default_action {
+#     type = "forward"
 
-    target_group_arn = aws_lb_target_group.client.arn
-  }
+#     target_group_arn = aws_lb_target_group.client.arn
+#   }
 
-}
+# }
 
 
-//HTTPS TO USER
-resource "aws_lb_listener_rule" "https_lisener" {
+# //HTTPS TO USER
+# resource "aws_lb_listener_rule" "https_lisener" {
 
-  listener_arn = aws_lb_listener.listener_https.arn
-  priority     = 100
+#   listener_arn = aws_lb_listener.listener_https.arn
+#   priority     = 100
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.users.arn
-  }
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.users.arn
+#   }
 
-  condition {
-    path_pattern {
-      values = ["/api/users", "/api/task"]
-    }
-  }
+#   condition {
+#     path_pattern {
+#       values = ["/api/users", "/api/task"]
+#     }
+#   }
 
-}
+# }

@@ -7,8 +7,8 @@ module "ecs_cluster" {
   vpc_id     = aws_default_vpc.default.id
   subnet_ids = [aws_default_subnet.default_us-east-1a.id, aws_default_subnet.default_us-east-1b.id]
 
-  component             = "here"
-  deployment_identifier = "listen"
+  component             = "micro"
+  deployment_identifier = "react-nginx"
 
   cluster_name                         = "cluster"
   cluster_instance_ssh_public_key_path = "./terraform.pub"
@@ -17,7 +17,7 @@ module "ecs_cluster" {
   cluster_minimum_size     = 0
   cluster_maximum_size     = 2
   cluster_desired_capacity = 2
-  security_groups          = [aws_security_group.here-listen-sg.id]
+  security_groups          = [aws_security_group.sg.id]
 }
 
 
@@ -25,23 +25,13 @@ module "ecs_cluster" {
 
 #TASK DEFINITION FOR USERS FOR DEFINING THE SPECS OF AN EC2 INSTANCE 
 resource "aws_ecs_task_definition" "users-td" {
-  family = "${var.my-project-name}-td"
+  family = "${var.my-project-name}-users-td"
 
   container_definitions = <<DEFINITION
 [
   {
     "cpu": 0,
-    "environment": [{
-      "name": "DATABASE_HOST",
-      "value": "${element(split(":", aws_db_instance.here-listen-db.endpoint), 0)}"
-    },
-    {"name":"MYSQL_ROOT_PASSWORD",
-    "value":"${var.mysql-root-password}"
-    },
-    {"name":"MYSQL_USER",
-    "value":"${var.mysql-user}"
-    }
-    ],
+   
 
 
     "portMappings": [
@@ -69,7 +59,7 @@ DEFINITION
 
 #TASK DEFINITION FOR CLIENT FOR DEFINING THE SPECS OF AN EC2 INSTANCE
 resource "aws_ecs_task_definition" "client-td" {
-  family = "${var.my-project-name}-td"
+  family = "${var.my-project-name}-client-td"
 
   container_definitions = <<DEFINITION
 [
