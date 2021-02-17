@@ -13,10 +13,10 @@ Setup:<br/>
 DockerHub<br/>
 Docker-repository must be named for client and server<br/>
 I named my project micro-react-nginx-users
-{Your_Docker_Id}/{YourProjectName}-client
-{Your_Docker_Id}/{YourProjectName}-users
 
-~ Build Client
+steps:
+
+~ 1 Build Client
 
 ```
 docker build \
@@ -32,7 +32,7 @@ docker build \
 docker push {Your_Docker_Id}/{YourProjectName}-client:prod
 ```
 
-~ Build User
+~ 2 Build User
 
 ```
 docker build \

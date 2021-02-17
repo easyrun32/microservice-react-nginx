@@ -1,5 +1,9 @@
 node_modules
-package-lock.json
+
 terraform.tfvars
 terraform.pem
 terraform.pub
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.lock.hcl
+.terraform
