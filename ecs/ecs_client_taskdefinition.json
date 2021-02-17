@@ -1,0 +1,18 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "%s/micro-react-nginx-client:prod",
+      "essential": true,
+      "memoryReservation": 300,
+      "portMappings": [
+        {
+          "hostPort": 0,
+          "protocol": "tcp",
+          "containerPort": 80
+        }
+      ]
+    }
+  ],
+  "family": "micro-react-nginx-client-td"
+}

@@ -1,0 +1,59 @@
+version: 0.2
+env:
+  variables:
+    AWS_REGION: "us-east-1"
+    REACT_APP_USERS_SERVICE_URL: ${ALB_DNS}
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - env | grep $REACT_APP_SECRETME
+      - |
+        if expr "$CODEBUILD_WEBHOOK_TRIGGER" == "branch/main" >/dev/null  && expr "$CODEBUILD_WEBHOOK_HEAD_REF" == "refs/heads/main" >/dev/null; then
+          DOCKER_TAG=prod
+        else
+          DOCKER_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}
+        fi
+      - echo "Docker tag:" $DOCKER_TAG
+      - aws s3 cp s3://docker-token/.docker.key .docker.key
+      - docker login -u $DOCKER_USERNAME --password-stdin < .docker.key
+      - rm .docker.key
+      - docker pull $DOCKER_USERNAME/micro-react-nginx-users:$DOCKER_TAG || true
+      - docker pull $DOCKER_USERNAME/micro-react-nginx-client:builder || true
+      - docker pull $DOCKER_USERNAME/micro-react-nginx-client:$DOCKER_TAG || true
+  build:
+    commands:
+      - echo building images
+      - docker-compose up -d --build
+      - >
+        docker build \
+          --cache-from $DOCKER_USERNAME/micro-react-nginx-users:$DOCKER_TAG \
+          -f users/Dockerfile.prod \
+          -t $DOCKER_USERNAME/micro-react-nginx-users:$DOCKER_TAG \
+          ./users
+      - >
+        docker build \
+          --target builder \
+          --cache-from $DOCKER_USERNAME/micro-react-nginx-client:builder \
+          -f client/Dockerfile.prod \
+          -t $DOCKER_USERNAME/micro-react-nginx-client:builder \
+          --build-arg NODE_ENV=production \
+          ./client
+      - >
+        docker build \
+          --cache-from $DOCKER_USERNAME/micro-react-nginx-client:$DOCKER_TAG \
+          -f client/Dockerfile.prod \
+          -t $DOCKER_USERNAME/micro-react-nginx-client:$DOCKER_TAG \
+          --build-arg REACT_APP_SECRETME=$REACT_APP_SECRETME \
+          ./client
+  post_build:
+    commands:
+      - echo pushing prod images to ecr..
+      - docker push $DOCKER_USERNAME/micro-react-nginx-users:$DOCKER_TAG
+      - docker push $DOCKER_USERNAME/micro-react-nginx-client:builder
+      - docker push $DOCKER_USERNAME/micro-react-nginx-client:$DOCKER_TAG
+      - chmod +x ./deploy.sh
+      - bash deploy.sh
