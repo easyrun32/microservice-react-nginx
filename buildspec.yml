@@ -30,7 +30,7 @@ phases:
       - >
         docker build \
           --cache-from $DOCKER_USERNAME/micro-react-nginx-users:$DOCKER_TAG \
-          -f users/Dockerfile.prod \
+          -f services/node-server-users/Dockerfile.prod \
           -t $DOCKER_USERNAME/micro-react-nginx-users:$DOCKER_TAG \
           ./services/node-server-users
       - >
