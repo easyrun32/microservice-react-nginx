@@ -1,15 +1,17 @@
 A microservice template!
-Technologies:
-React - frontend
-Node - server
-Nginx - proxy server basically to route the services to avoid same site cross origin
-Docker - connection between the microservices
-Terraform - setup the infrastructure on aws
-buildspec.yml - To compile our infrastructure in the cloud
 
-Setup:
-DockerHub
-Docker-repository must be named for client and server
+<br/>
+Technologies:
+- React - frontend
+- Node - server
+- Nginx - proxy server basically to route the services to avoid same site cross origin
+- Docker - connection between the microservices
+- Terraform - setup the infrastructure on aws
+- buildspec.yml - To compile our infrastructure in the cloud
+
+Setup:<br/>
+DockerHub<br/>
+Docker-repository must be named for client and server<br/>
 I named my project micro-react-nginx-users
 {Your_Docker_Id}/{YourProjectName}-client
 {Your_Docker_Id}/{YourProjectName}-users
