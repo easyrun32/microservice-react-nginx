@@ -32,7 +32,7 @@ phases:
           --cache-from $DOCKER_USERNAME/micro-react-nginx-users:$DOCKER_TAG \
           -f users/Dockerfile.prod \
           -t $DOCKER_USERNAME/micro-react-nginx-users:$DOCKER_TAG \
-          ./users
+          ./services/node-server-users
       - >
         docker build \
           --target builder \
@@ -46,7 +46,6 @@ phases:
           --cache-from $DOCKER_USERNAME/micro-react-nginx-client:$DOCKER_TAG \
           -f client/Dockerfile.prod \
           -t $DOCKER_USERNAME/micro-react-nginx-client:$DOCKER_TAG \
-          --build-arg REACT_APP_SECRETME=$REACT_APP_SECRETME \
           ./client
   post_build:
     commands:
