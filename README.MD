@@ -1,14 +1,14 @@
 A microservice template!
 
 <br/>
-Technologies:
-- React - frontend
-- Node - server
-- Nginx - proxy server basically to route the services to avoid same site cross origin
-- Docker - connection between the microservices
-- Terraform - setup the infrastructure on aws
-- buildspec.yml - To compile our infrastructure in the cloud
-
+Technologies:<br/>
+- React - frontend<br/>
+- Node - server<br/>
+- Nginx - proxy server basically to route the services to avoid same site cross origin<br/>
+- Docker - connection between the microservices<br/>
+- Terraform - setup the infrastructure on aws<br/>
+- buildspec.yml - To compile our infrastructure in the cloud<br/>
+<br/>
 Setup:<br/>
 DockerHub<br/>
 Docker-repository must be named for client and server<br/>
